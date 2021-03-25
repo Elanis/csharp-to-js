@@ -54,15 +54,19 @@ export default class Compiler {
 	}
 
 	static replaceStdMethods(csCode) {
-		csCode = csCode.replace('Console.WriteLine', 'console.log');
+		csCode = csCode.replace(new RegExp('Console.WriteLine', 'g'), 'console.log');
 
 		return csCode;
 	}
 
 	static removeScopes(csCode) {
+		csCode = csCode.replace(/public let/g, '');
 		csCode = csCode.replace(/public/g, '');
+		csCode = csCode.replace(/private let/g, '');
 		csCode = csCode.replace(/private/g, '');
+		csCode = csCode.replace(/protected let/g, '');
 		csCode = csCode.replace(/protected/g, '');
+		csCode = csCode.replace(/static let/g, 'static');
 
 		return csCode;
 	}
@@ -113,9 +117,36 @@ export default class Compiler {
 	}
 
 	static replaceTypes(csCode) {
-		// TODO: improve
-		csCode = csCode.replace(/void/g, '');
-		csCode = csCode.replace(/string\[\]/g, '');
+		const typeList = [
+			'void',
+			'string',
+			'int',
+			'float',
+			'double',
+			'long',
+		];
+
+		for(const type of typeList) {
+			csCode = csCode.replace(
+				new RegExp('\\(' + type + '\\[\\]', 'g'),
+				'('
+			);
+
+			csCode = csCode.replace(
+				new RegExp(type + '\\[\\] ', 'g'),
+				'let '
+			);
+
+			csCode = csCode.replace(
+				new RegExp('\\(' + type, 'g'),
+				'('
+			);
+
+			csCode = csCode.replace(
+				new RegExp(type + ' ', 'g'),
+				'let '
+			);
+		}
 
 		return csCode;
 	}
@@ -157,10 +188,11 @@ export default class Compiler {
 	static generateClasses(csCode) {
 		csCode = Compiler.removeUsings(csCode);
 
-		csCode = Compiler.removeScopes(csCode);
 		csCode = Compiler.applyNamespaceToClasses(csCode);
 
 		csCode = Compiler.replaceTypes(csCode);
+		csCode = Compiler.removeScopes(csCode);
+
 		csCode = Compiler.replaceStdMethods(csCode);
 
 		csCode = Compiler.cleanSpaces(csCode);
