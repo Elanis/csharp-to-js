@@ -1,0 +1,17 @@
+{
+  "name": "csharp-to-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "c8 -r lcov -r text npm run tests",
+    "tests": "mocha *.spec.js --color"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "c8": "^7.6.0",
+    "mocha": "^8.3.2"
+  }
+}
