@@ -56,18 +56,27 @@ export default class Compiler {
 	}
 
 	static removeScopes(csCode) {
-		csCode = csCode.replace(/public let/g, '');
-		csCode = csCode.replace(/public/g, '');
-		csCode = csCode.replace(/private let/g, '');
-		csCode = csCode.replace(/private/g, '');
-		csCode = csCode.replace(/protected let/g, '');
-		csCode = csCode.replace(/protected/g, '');
-		csCode = csCode.replace(/internal let/g, '');
-		csCode = csCode.replace(/internal/g, '');
-		csCode = csCode.replace(/protected internal let/g, '');
-		csCode = csCode.replace(/protected internal/g, '');
-		csCode = csCode.replace(/private protected let/g, '');
-		csCode = csCode.replace(/private protected/g, '');
+		const scopes = [
+			'public',
+			'private',
+			'protected',
+			'internal',
+			'protected internal',
+			'private protected',
+		];
+
+		for(const scope of scopes) {
+			csCode = csCode.replace(
+				new RegExp(scope, 'g'),
+				''
+			);
+
+			csCode = csCode.replace(
+				new RegExp(scope + ' let', 'g'),
+				''
+			);
+		}
+
 		csCode = csCode.replace(/static let/g, 'static');
 
 		return csCode;
