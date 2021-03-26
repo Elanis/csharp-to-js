@@ -62,20 +62,16 @@ describe('• Compiler', () => {
 		const sourceCodeCS = fs.readFileSync('code-spec/02-numbers-and-calculation/Program.cs', 'utf8');
 
 		it('Browser', () => {
-			const sourceCodeCS_Browser = fs.readFileSync('code-spec/02-numbers-and-calculation/program.browser.js', 'utf8');
-
 			isCodeEquivalent(
 				Compiler.transformToBrowser(sourceCodeCS),
-				sourceCodeCS_Browser
+				fs.readFileSync('code-spec/02-numbers-and-calculation/program.browser.js', 'utf8')
 			);
 		});
 
 		it('Node', () => {
-			const sourceCodeCS_Node = fs.readFileSync('code-spec/02-numbers-and-calculation/program.node.js', 'utf8');
-
 			isCodeEquivalent(
 				Compiler.transformToNode(sourceCodeCS),
-				sourceCodeCS_Node
+				fs.readFileSync('code-spec/02-numbers-and-calculation/program.node.js', 'utf8')
 			);
 		});
 	});

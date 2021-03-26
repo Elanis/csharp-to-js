@@ -1,3 +1,5 @@
+import StdLib from './stdLib.js';
+
 export default class Compiler {
 	static extractLines(csCode) {
 		return csCode
@@ -53,12 +55,6 @@ export default class Compiler {
 		return lines.join('\n');
 	}
 
-	static replaceStdMethods(csCode) {
-		csCode = csCode.replace(new RegExp('Console.WriteLine', 'g'), 'console.log');
-
-		return csCode;
-	}
-
 	static removeScopes(csCode) {
 		csCode = csCode.replace(/public let/g, '');
 		csCode = csCode.replace(/public/g, '');
@@ -66,6 +62,12 @@ export default class Compiler {
 		csCode = csCode.replace(/private/g, '');
 		csCode = csCode.replace(/protected let/g, '');
 		csCode = csCode.replace(/protected/g, '');
+		csCode = csCode.replace(/internal let/g, '');
+		csCode = csCode.replace(/internal/g, '');
+		csCode = csCode.replace(/protected internal let/g, '');
+		csCode = csCode.replace(/protected internal/g, '');
+		csCode = csCode.replace(/private protected let/g, '');
+		csCode = csCode.replace(/private protected/g, '');
 		csCode = csCode.replace(/static let/g, 'static');
 
 		return csCode;
@@ -193,7 +195,7 @@ export default class Compiler {
 		csCode = Compiler.replaceTypes(csCode);
 		csCode = Compiler.removeScopes(csCode);
 
-		csCode = Compiler.replaceStdMethods(csCode);
+		csCode = StdLib.transform(csCode);
 
 		csCode = Compiler.cleanSpaces(csCode);
 		csCode = Compiler.indent(csCode);

@@ -15,3 +15,4 @@ Run test compilations: `npm test`
  - Console.ReadKey / Console.ReadLine / Console.Write support
  - Add code for type checking (input/output)
  - Refacto to make it a bit (more) readable
+ - Model with getter & setter, with scopes
